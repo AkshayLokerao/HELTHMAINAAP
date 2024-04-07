@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #c1dee7;
+            margin: 0;
+            padding: 0;
+            background-image: url('background.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        .container {
+            width: 80%;
+            margin: 50px auto;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1, h2 {
+            text-align: center;
+        }
+        form {
+            max-width: 300px;
+            margin: 0 auto;
+        }
+        input[type="text"],
+        input[type="password"],
+        input[type="email"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+        }
+        .content {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 5px;
+            text-align: center;
+        }
+        .app-buttons, .emergency-buttons {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .app-buttons a, .emergency-buttons a {
+            margin: 0 10px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #bgm {
+            position: absolute;
+            top: -50px;
+            left: -50px;
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+    <audio id="bgm" autoplay loop>
+        <source src="background.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+    <div class="container">
+        <h1>Health App</h1>
+        <div id="loginDiv">
+            <h2>Sign In</h2>
+            <form id="loginForm">
+                <input type="text" id="username" placeholder="Username" required><br>
+                <input type="password" id="password" placeholder="Password" required><br>
+                <input type="submit" value="Sign In">
+            </form>
+            <p>Don't have an account? <a href="#" id="showSignup">Sign Up</a></p>
+            <p><a href="#" id="forgotPassword">Forgot Password?</a></p>
+        </div>
+        <div id="signupDiv" style="display: none;">
+            <h2>Sign Up</h2>
+            <form id="signupForm">
+                <input type="text" id="newUsername" placeholder="New Username" required><br>
+                <input type="password" id="newPassword" placeholder="New Password" required><br>
+                <input type="submit" value="Sign Up">
+            </form>
+            <p>Already have an account? <a href="#" id="showSignin">Sign In</a></p>
+        </div>
+        <div class="content" id="appContent" style="display: none;">
+            <h2>Welcome to Health App!</h2>
+            <p>This is your personal health assistant. You can track your fitness progress, set goals, and get personalized recommendations for a healthier lifestyle.</p>
+            <div class="app-buttons">
+                <a href="https://www.myfitnesspal.com/">MyFitnessPal</a>
+                <a href="https://www.fitbit.com/">Fitbit</a>
+                <a href="https://www.strava.com/">Strava</a>
+            </div>
+            <div class="emergency-buttons">
+                <a href="tel:911">Call 911</a>
+                <a href="https://www.webmd.com/health-services/">Find Hospitals</a>
+                <a href="https://www.redcross.org/">Red Cross</a>
+                <a href="https://www.apollohospitals.com/">Apollo Hospitals</a>
+                <a href="https://www.yashodahospitals.com/">Yashoda Hospitals</a>
+                <a href="https://www.maxhealthcare.in/">Max Healthcare</a>
+                <a href="https://www.indianredcross.org/">Indian Red Cross</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Function to toggle between sign in and sign up forms
+        function toggleForms(showSignIn) {
+            document.getElementById("loginDiv").style.display = showSignIn ? "block" : "none";
+            document.getElementById("signupDiv").style.display = showSignIn ? "none" : "block";
+            document.getElementById("forgotPasswordDiv").style.display = "none";
+        }
+
+        // Event listener for showing sign up form
+        document.getElementById("showSignup").addEventListener("click", function(event) {
+            event.preventDefault();
+            toggleForms(false); // Show sign up form
+        });
+
+        // Event listener for showing sign in form
+        document.getElementById("showSignin").addEventListener("click", function(event) {
+            event.preventDefault();
+            toggleForms(true); // Show sign in form
+        });
+
+        // Event listener for forgot password link
+        document.getElementById("forgotPassword").addEventListener("click", function(event) {
+            event.preventDefault();
+            var choice = prompt("Enter 'G' to redirect to Gmail or 'M' to redirect to the default mail client:");
+            if (choice && (choice.toLowerCase() === 'g' || choice.toLowerCase() === 'm')) {
+                var email = prompt("Enter your email:");
+                if (email) {
+                    if (choice.toLowerCase() === 'g') {
+                        // Redirect to Gmail compose page with subject set to "I forgot my password please send a reset link"
+                        window.location.href = "https://mail.google.com/mail/u/0/#inbox?compose=new&su=I%20forgot%20my%20password%20please%20send%20a%20reset%20link";
+                    } else {
+                        // Redirect to the default mail client with subject set to "I forgot my password please send a reset link"
+                        window.location.href = "mailto:" + email + "?subject=I%20forgot%20my%20password%20please%20send%20a%20reset%20link";
+                    }
+                }
+            } else {
+                alert("Invalid choice. Please enter 'G' or 'M'.");
+            }
+        });
+
+        // Event listener for sign in form submission
+        document.getElementById("loginForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // Prevent the form from submitting
+            document.getElementById("loginDiv").style.display = "none";
+            document.getElementById("appContent").style.display = "block";
+        });
+
+        // Event listener for sign up form submission
+        document.getElementById("signupForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // Prevent the form from submitting
+            var newUsername = document.getElementById("newUsername").value;
+            var newPassword = document.getElementById("newPassword").value;
+
+            // Here you can add logic to handle the new user registration
+            // For simplicity, let's just show a success message
+            alert("User " + newUsername + " registered successfully! You can now sign in.");
+            toggleForms(true); // Show sign in form after successful registration
+        });
+    </script>
+</body>
+</html>
